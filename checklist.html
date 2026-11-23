@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#B83A26">
+<title>準備清單｜指南實小田徑</title>
+<style>
+:root{
+  --bg:#F6F3EE; --card:#FFFFFF; --ink:#1E1B18; --ink2:#5F5A54; --ink3:#9A948C;
+  --line:#E4DED5; --track:#B83A26; --track-bg:#F8E4DE; --track-ink:#7A2414;
+  --ok:#1E6B34; --ok-bg:#DDF2E2; --warn:#9B1C1C; --warn-bg:#FDE4E4;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#151311; --card:#211E1B; --ink:#F3EFEA; --ink2:#BDB6AD; --ink3:#857E76;
+    --line:#35302B; --track:#E2654D; --track-bg:#3A1F18; --track-ink:#F6B9AA;
+    --ok:#7FD597; --ok-bg:#163222; --warn:#F5A3A3; --warn-bg:#3A1717;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;font-size:16px;line-height:1.5;padding-bottom:env(safe-area-inset-bottom)}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:560px;margin:0 auto;padding:0 14px 48px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top)) 0 8px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+h1{font-size:20px;margin:0}
+.back{font-size:14px;color:var(--track);text-decoration:none;border:1.5px solid var(--track);border-radius:999px;padding:5px 12px;white-space:nowrap;background:none;font-family:inherit;cursor:pointer}
+h2{font-size:17px;margin:22px 2px 4px}
+.sub{font-size:13px;color:var(--ink2);margin:0 2px 10px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.prog{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.bar{flex:1;height:8px;border-radius:99px;background:var(--bg);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .2s}
+.prog b{font-size:14px;white-space:nowrap}
+.ck{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-top:1px solid var(--line);cursor:pointer;user-select:none}
+.ck:first-of-type{border-top:0}
+.ck input{appearance:none;flex:none;width:24px;height:24px;border:2px solid var(--ink3);border-radius:7px;margin:0;display:grid;place-items:center;cursor:pointer;background:var(--card)}
+.ck input:checked{background:var(--ok);border-color:var(--ok)}
+.ck input:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.ck input:focus-visible{outline:2px solid var(--track);outline-offset:2px}
+.ck span{font-size:16px}
+.ck small{display:block;color:var(--ink2);font-size:13px}
+.ck.done span{color:var(--ink3);text-decoration:line-through}
+.ck.done small{text-decoration:none}
+.foot{display:flex;justify-content:flex-end;padding:10px 14px;border-top:1px solid var(--line)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:10px}
+.ih{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ih b{font-size:16px}
+.badge{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.need{background:var(--warn-bg);color:var(--warn)}
+.have{background:var(--ok-bg);color:var(--ok)}
+.who{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.who li{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:14px;background:var(--bg);border-radius:10px;padding:7px 10px}
+.who li small{color:var(--ink2)}
+.cancel{font:inherit;font-size:12px;border:0;background:none;color:var(--track);text-decoration:underline;cursor:pointer;white-space:nowrap}
+.add{margin-top:10px;width:100%;font:inherit;font-size:15px;font-weight:700;border:1.5px dashed var(--track);background:transparent;color:var(--track);border-radius:12px;padding:10px;cursor:pointer}
+.form{margin-top:10px;display:grid;gap:8px;background:var(--bg);border-radius:12px;padding:12px}
+.form label{font-size:13px;color:var(--ink2)}
+.form input,.form select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:4px}
+.row{display:flex;gap:8px}
+.row button{flex:1}
+.go{font:inherit;font-size:16px;font-weight:700;border:0;border-radius:12px;background:var(--track);color:#fff;padding:11px;cursor:pointer}
+.go:disabled{opacity:.5;cursor:not-allowed}
+.ghost{font:inherit;font-size:15px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink2);padding:11px;cursor:pointer}
+.msg{font-size:14px;border-radius:10px;padding:8px 10px}
+.msg.ok{background:var(--ok-bg);color:var(--ok)}
+.msg.err{background:var(--warn-bg);color:var(--warn)}
+.loading{text-align:center;color:var(--ink3);padding:20px}
+.end{font-size:12px;color:var(--ink3);text-align:center;margin-top:20px}
+.confirm{display:none;gap:6px;align-items:center;font-size:12px}
+.confirm.on{display:flex}
+.form .days{display:flex;gap:10px;margin-top:4px}
+.form .day{flex:1;display:flex;align-items:center;gap:8px;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.form .day input{width:22px;height:22px;margin:0;padding:0;flex:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>🎒 準備清單</h1>
+  <a class="back" href="./">← 回賽程</a>
+</header>
+
+<h2>學生攜帶</h2>
+<p class="sub">家長提醒孩子自己準備，收好一樣就勾一樣（只存在這支手機）</p>
+<div class="box" id="mine">
+  <div class="prog"><div class="bar"><i id="barfill"></i></div><b class="num" id="progtxt">0 / 11</b></div>
+  <div id="cklist"></div>
+  <div class="foot">
+    <span class="confirm" id="rsconfirm">確定全部取消勾選？<button class="cancel" id="rsyes">確定</button><button class="cancel" id="rsno">不要</button></span>
+    <button class="cancel" id="reset">重新開始</button>
+  </div>
+</div>
+
+<p class="end">只存在這支手機・換手機或清除瀏覽資料會重來</p>
+</div>
+
+<script>
+const MINE = [
+  ['運動服'], ['釘鞋'], ['乾的衣服、毛巾'], ['雨傘或輕便雨衣'], ['水壺'], ['保溫瓶'], ['塑膠袋'],
+  ['悠遊卡', '松山新店線小巨蛋站 2 號出口出來'], ['學生證'], ['帽子', '怕下雨'], ['健保卡（小黃卡）']
+];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store = { get(k,d){ try{ const v=localStorage.getItem('zn_'+k); return v===null?d:JSON.parse(v);}catch(e){return d;} }, set(k,v){ try{localStorage.setItem('zn_'+k,JSON.stringify(v));}catch(e){} } };
+
+/* 學生攜帶 */
+let checked = store.get('prep_checked2', []);
+function renderMine(){
+  $('#cklist').innerHTML = MINE.map(([t, n], i) => {
+    const on = checked.includes(i);
+    return `<label class="ck${on ? ' done' : ''}"><input type="checkbox" data-i="${i}"${on ? ' checked' : ''}><div><span>${esc(t)}</span>${n ? `<small>${esc(n)}</small>` : ''}</div></label>`;
+  }).join('');
+  const k = checked.length;
+  $('#progtxt').textContent = k === MINE.length ? '全部準備好了 ✓' : `${k} / ${MINE.length}`;
+  $('#barfill').style.width = (k / MINE.length * 100) + '%';
+}
+$('#cklist').addEventListener('change', e => {
+  const i = +e.target.dataset.i;
+  checked = e.target.checked ? [...new Set([...checked, i])] : checked.filter(x => x !== i);
+  store.set('prep_checked2', checked); renderMine();
+});
+$('#reset').addEventListener('click', () => { $('#rsconfirm').classList.add('on'); $('#reset').style.display = 'none'; });
+$('#rsno').addEventListener('click', () => { $('#rsconfirm').classList.remove('on'); $('#reset').style.display = ''; });
+$('#rsyes').addEventListener('click', () => { checked = []; store.set('prep_checked2', checked); $('#rsconfirm').classList.remove('on'); $('#reset').style.display = ''; renderMine(); });
+renderMine();
+
+</script>
+</body>
+</html>
