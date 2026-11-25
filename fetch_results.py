@@ -8,7 +8,7 @@ import json, os, sys, urllib.request, urllib.parse, datetime
 BASE = "https://dsport.tp.edu.tw/api"
 AREA = 3            # 南區
 GROUP = "B"         # 乙組
-SCHOOL = "指南"  # 大會簡稱可能是「指南」或「指南實小」，下面兩種都比對
+SCHOOL = "指南"
 ROSTER = {"3136", "3137", "3138", "3139", "3141", "4113", "4114", "4115", "4116"}
 CTYPE = {"fc": "預賽", "rc": "複賽", "lc": "決賽"}
 SEX = {"M": "男", "F": "女"}
@@ -23,16 +23,17 @@ def get(path, **params):
 
 
 def score_rows(item_id, ctype, tm):
-    """田徑成績 API。先帶 GroupId，拿不到再試不帶的（一律再用背號過濾，不會混到甲組）。"""
+    """田徑成績 API。官網用 TmId=性別+組別（例如 FB = 女生乙組），不另外帶 GroupId。
+    （11/24 發現：舊寫法 TmId=F&GroupId=B 會一律回傳空陣列。）"""
     variants = [
+        dict(AreaId=AREA, TmId=tm + GROUP, ItemId=item_id, Ctype=ctype, Sort="Rank"),
         dict(AreaId=AREA, TmId=tm, ItemId=item_id, Ctype=ctype, GroupId=GROUP, Sort="Rank"),
-        dict(AreaId=AREA, GroupId=GROUP, TmId=tm, ItemId=item_id, Ctype=ctype, Sort="Rank"),
-        dict(AreaId=AREA, TmId=tm, ItemId=item_id, Ctype=ctype, Sort="Rank"),
     ]
     for p in variants:
         try:
             rows = get("spscore/ScoreView", **p)
-        except Exception:
+        except Exception as e:
+            print(f"  抓不到 {item_id} {ctype} {tm}：{e.__class__.__name__}")
             continue
         if rows:
             return rows
@@ -65,15 +66,16 @@ def main():
                 key = f"{p['Item']}|{rnd}|{sx}"
                 rows = score_rows(p["ItemId"], c.upper(), tm)
                 if not rows:
+                    print(f"  {key}：已公告但抓不到成績")
                     continue
                 ups_known = any((r.get("Ups") or "").strip() for r in rows)
-                mine = [r for r in rows if (r.get("Abbname") or "").strip().replace("實小", "").replace("國小", "") == SCHOOL
+                mine = [r for r in rows if (r.get("Abbname") or "").strip() == SCHOOL
                         and (str(r.get("PlayerNo") or "") in ROSTER or "接力" in p["Item"])]
                 result["items"][key] = {
                     "upsKnown": ups_known,
                     "count": len(rows),
                     "rows": [{
-                        "no": str(r.get("PlayerNo") or ""), "name": (r.get("Name") or "").strip(),
+                        "no": str(r.get("PlayerNo") or ""), "name": (r.get("Name") or "").replace("<br/>", "、").strip("、 "),
                         "heat": r.get("TmNo"), "lane": r.get("RdNo"),
                         "score": r.get("Score") or "", "wind": r.get("Wind") or "",
                         "rank": r.get("Rank"), "heatRank": r.get("dRank"),
