@@ -1,5 +1,5 @@
 {
- "updated": "2026/11/25 14:26",
+ "updated": "2026/11/25 14:29",
  "ok": true,
  "items": {
   "跳高|決賽|女": {
@@ -424,6 +424,36 @@
    "upsKnown": false,
    "count": 22,
    "rows": []
+  },
+  "壘球擲遠|決賽|男": {
+   "upsKnown": false,
+   "count": 32,
+   "rows": [
+    {
+     "no": "3139",
+     "name": "許恩碩",
+     "heat": "10",
+     "lane": null,
+     "score": "37.17",
+     "wind": "",
+     "rank": 15,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "3137",
+     "name": "施承凱",
+     "heat": "25",
+     "lane": null,
+     "score": "33.46",
+     "wind": "",
+     "rank": 24,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    }
+   ]
   }
  },
  "published": [
@@ -450,6 +480,7 @@
   "60公尺|預賽|女",
   "60公尺|預賽|男",
   "壘球擲遠|決賽|女",
+  "壘球擲遠|決賽|男",
   "推鉛球|決賽|女",
   "推鉛球|決賽|男",
   "跳遠|決賽|女",
