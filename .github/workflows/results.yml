@@ -2,7 +2,7 @@ name: 更新比賽成績
 
 on:
   schedule:
-    # 臺北時間 11/24、11/25 早上 7:30 到下午 4:50，每 10 分鐘一次（GitHub 用 UTC，可能晚幾分鐘）
+    # 臺北時間 11/24、11/25 早上 7:30 到下午 4:50（GitHub 排程常常延誤或漏跑，所以每次執行會自己循環）
     - cron: "*/10 23 23,24 11 *"
     - cron: "*/10 0-8 24,25 11 *"
   workflow_dispatch:
@@ -17,21 +17,30 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    timeout-minutes: 350
     steps:
       - name: 下載網站檔案
         run: git clone --depth 1 "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" repo
-      - name: 抓成績
-        working-directory: repo
-        run: python3 fetch_results.py
-      - name: 有變動才上傳
+      - name: 每 3 分鐘抓一次成績，有變動才上傳（跑到臺北時間 17:00，或最多 5.5 小時）
         working-directory: repo
         run: |
           git config user.name "results-bot"
           git config user.email "results-bot@users.noreply.github.com"
-          git add results.json
-          if git diff --cached --quiet; then
-            echo "成績沒有變動"
-          else
-            git commit -m "更新成績 $(TZ=Asia/Taipei date '+%m/%d %H:%M')"
-            git push
-          fi
+          start=$(date +%s)
+          while true; do
+            git pull --rebase --quiet || echo "同步失敗，先繼續"
+            python3 fetch_results.py || echo "抓成績失敗，下一輪再試"
+            git add results.json
+            if git diff --cached --quiet; then
+              echo "成績沒有變動"
+            else
+              git commit -q -m "更新成績 $(TZ=Asia/Taipei date '+%m/%d %H:%M')"
+              git push --quiet || { git pull --rebase --quiet && git push --quiet; } || echo "上傳失敗，下一輪再試"
+            fi
+            hm=$(TZ=Asia/Taipei date +%H%M)
+            if [ "$hm" -ge 1700 ] || [ $(( $(date +%s) - start )) -ge 19800 ]; then
+              echo "時間到，結束"
+              break
+            fi
+            sleep 180
+          done
