@@ -1,5 +1,5 @@
 {
- "updated": "2026/11/25 10:16",
+ "updated": "2026/11/25 10:19",
  "ok": true,
  "items": {
   "跳高|決賽|女": {
@@ -275,9 +275,71 @@
    "upsKnown": false,
    "count": 15,
    "rows": []
+  },
+  "100公尺|預賽|男": {
+   "upsKnown": false,
+   "count": 34,
+   "rows": [
+    {
+     "no": "3139",
+     "name": "許恩碩",
+     "heat": "2",
+     "lane": "3",
+     "score": "14.63",
+     "wind": "+0.7",
+     "rank": 4,
+     "heatRank": 2,
+     "ups": "",
+     "remark": "q4"
+    },
+    {
+     "no": "3141",
+     "name": "吳芊嶽",
+     "heat": "2",
+     "lane": "7",
+     "score": "15.94",
+     "wind": "+0.7",
+     "rank": 25,
+     "heatRank": 7,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "100公尺|預賽|女": {
+   "upsKnown": false,
+   "count": 34,
+   "rows": [
+    {
+     "no": "4116",
+     "name": "吳芊芊",
+     "heat": "4",
+     "lane": "6",
+     "score": "16.64",
+     "wind": "-2.2",
+     "rank": 18,
+     "heatRank": 5,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "4113",
+     "name": "賴盈曦",
+     "heat": "5",
+     "lane": "5",
+     "score": "",
+     "wind": "-2.4",
+     "rank": 99,
+     "heatRank": 99,
+     "ups": "",
+     "remark": "DNS"
+    }
+   ]
   }
  },
  "published": [
+  "100公尺|預賽|女",
+  "100公尺|預賽|男",
   "2000公尺競走|決賽|女",
   "200公尺|決賽|女",
   "200公尺|決賽|男",
